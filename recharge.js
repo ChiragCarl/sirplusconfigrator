@@ -30,7 +30,7 @@ app.use(cors());
 // let rechargeApi='sk_test_1x1_c0d5681c1dcd49870eeabd90c1e9068ab05b7612166f821df874b76334c8a249';
 
 
-console.log(process.env.shopName);
+//console.log(process.env.shopName);
 //client site creds
 let Apikey=process.env.Apikey; //"89ddc5a0f041b4ce30d407b90fab38ed";
 let APIsecretkey=process.env.APIsecretkey //"a7219f0fb3b02e7a4a33ebf52ad2125b";
