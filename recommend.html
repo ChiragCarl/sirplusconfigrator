@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>Recommendation Task </title>
+    <head>
+    <body>
+        <input type="text" name="customerID" id="customerID"/> <br/>
+        <input type="text" name="productID" id="productID"/> <br/>
+        <input type="button" value="get Recommended Product " onclick="getRecommnedProduct();"/>
+        <input type="button" value="Add New  Recommended Product " onclick="addRecommendedProduct();"/>
+        <input type="button" value="Add New  Recommended Product " onclick="updateRecommendedProduct();"/>
+        
+
+
+    </body>
+
+    <script>
+       async function getRecommnedProduct(){
+            const customerID=document.getElementById('customerID').value;
+                await fetch('http://localhost:750/getRecommendedProduct?customerID='+customerID).then(function(resp){
+                    return resp.json();
+                }).then (function (data){
+                    productRecord=data;
+                    console.log(data);    
+                }).catch(function (err){
+                    console.log(err);
+                });     
+        }
+
+
+        //this code will work when the user comes first time and 2nd time and chose any other things 
+        async function addRecommendedProduct(){                   
+            let new_Recomended_Product = {
+                product: {
+                    customerID: '3',
+                    recommendedID:'8209960370469',
+                }
+            };
+            const res = await fetch('http://localhost:750/updateRecomendedProduct',{method:"post",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_Recomended_Product)})
+            console.log(res);
+        }
+
+        //this code will work when the user comes first time and 2nd time and chose any other things 
+        async function updateRecommendedProduct(){                   
+            let new_Recomended_Product = {
+                product: {
+                    customerID: '3',
+                    recommendedID:'8209960370469,8209960075557',
+                }
+            };
+            const res = await fetch('http://localhost:750/updateRecomendedProduct',{method:"post",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_Recomended_Product)})
+            console.log(res);
+        }
+    </script>
+</html>

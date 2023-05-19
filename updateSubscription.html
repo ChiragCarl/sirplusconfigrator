@@ -1,0 +1,172 @@
+<html>
+    <body>
+        <select id="custName">
+
+        </select><br/>
+
+        <input type="text" id="cName" name="cName" placeholder="customer Name "><br/>
+        
+        <input type="email" id="cEmail" name="cEame" placeholder="customer Email "><br/>
+        
+
+        <input type="number" id="cNumber" name="cNumber" placeholder="customer Contact "><br/>
+
+        <input type="button" value=" update  customer subscription" onclick="updateCust();"/>
+        
+        <input type="button" value="delete " onclick="deleteCust();"/>
+        
+        <input type="button" value=" for cancel  Subscription " onclick="getSubs();"/>
+        
+        <input type="button" value=" get All Customers " onclick="getallCustomers();"/>
+        
+        <input type="button" value=" delete Single Subscription " onclick="deleteSubscription();"/>
+        
+
+        <input type="button" value=" Create A New Product " onclick="storeProductRecharge();"/>
+        
+        <input type="button" value=" Create A New Customer " onclick="createNewCustomerRecharge();"/>
+
+        <input type="button" value=" get All orders  " onclick="getAllordersFromRecharge();"/>
+
+
+    </body>
+    <script>
+        let allCustomerID = [],
+        allCustomeCount = '',
+        allSubscriptionID=[];
+        function _id(obj){
+            return document.getElementById(obj);
+        }
+
+        async function createNewCustomerRecharge(){
+          
+            //await fetch('http://localhost:750/createCustomerInRecharge',
+            await fetch('http://localhost:750/skipCustomerNextSubscriptedOrder',
+            { method:"POST",headers:{ "Content-Type": "application/json"}})
+            .then(function(resp){
+                return resp.json();
+            }).then (function(data){
+                console.log(data);
+            })
+        }
+
+        //create an New Product into the recharge product section
+        async function storeProductRecharge(){
+
+            await fetch('http://localhost:750/addProductRechargeApp',
+            { method:"POST",headers:{ "Content-Type": "application/json"}})
+            .then(function(resp){
+                return resp.json();
+            }).then (function(data){
+                console.log(data);
+            })
+        }
+
+        //this code can be used to get all orders from the recharge 
+       async function getAllordersFromRecharge(){
+        await fetch('http://localhost:750/allOrders').then(function(resp){
+                return resp.json();
+            }).then (function(data){
+                console.log(data);
+            });
+
+        }
+
+        //get subscription customer id 
+        async function getallCustomers(){
+            await fetch('http://localhost:750/allCustomerRecharge').then(function(resp){
+                return resp.json();
+            }).then (function(data){
+                //console.log(data.customers);
+                for(let x=0;x<data.customers.length;x++){
+                    if(data.customers[x].email=="kelvin.s@appwrk.com"){
+                        console.log(data.customers[x].id);
+                        localStorage.setItem("subscriptionCustomerId",data.customers[x].id);
+                    }
+                }
+            })
+        }
+        //delete a particular subscription from the recharge Payment App 
+        async function deleteSubscription(){
+            console.log(allSubscriptionID);
+            await fetch('http://localhost:750/deleteSubscriptionPlan?Id='+parseInt(allSubscriptionID[0]),
+            {
+                method:"DELETE",headers:{ "Content-Type": "application/json"}
+            }).then(function(resp){
+                return resp.json();
+            }).then(function(data){
+                cons.log(data);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+
+        let customerCount = 1;
+        async function updateSubs(id){
+            let new_subscription = {
+                subscription: {
+                    "quantity":5,
+                    "charge_interval_frequency":12,
+                    "order_interval_frequency":"12",
+                    "order_interval_unit":"day"
+                }
+            };
+            await fetch('http://localhost:750/updateSubscriptionPlan?Id='+parseInt(id),
+            {method:"PUT",headers:{ "Content-Type": "application/json"},
+            body:JSON.stringify(new_subscription)}).then(function(resp){
+                return resp.json();
+            }).then(function(data){
+                console.log(data);
+                if(allCustomeCount > customerCount){
+                    if(allCustomerID[customerCount].customer_id==localStorage.getItem("subscriptionCustomerId")){
+                        updateSubs(parseInt(allCustomerID[customerCount].id));
+                        customerCount++;
+                    }
+                }
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+
+
+        // customer Id from Customer table ---- 110652938
+        async function getSubs(){
+            await fetch('http://localhost:750/cancelCustomerSubscription').then(function(resp){
+                return resp.json();
+            }).then (function(data){
+               console.log(data);
+            })
+
+            // const res = await fetch('http://localhost:750/allSubscriptionPlan');
+            // const json = await res.json();
+            // console.log({a, b})
+        }
+
+        //this function will call when we click on the button 
+        async function updateCust(){
+            let new_subscription = {
+                subscription: {
+                    "quantity":16,
+                    "charge_interval_frequency":16,
+                    "order_interval_frequency":"16",
+                    "order_interval_unit":"day"
+                }
+            };
+           await fetch('http://localhost:750/updateSubscriptionPlan?Id=354951133',
+                        {method:"PUT",headers:{ "Content-Type": "application/json"},
+                        body:JSON.stringify(new_subscription)}).then(function(resp){
+                            return resp.json();
+                        }).then(function(data){
+                            console.log(data);
+                        }).catch(function (err){
+                           console.log(err);
+                        });
+                    
+        }
+
+    
+    </script>
+
+</html>

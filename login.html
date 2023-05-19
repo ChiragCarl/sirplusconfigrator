@@ -1,0 +1,56 @@
+<html>
+    <body>
+      
+        
+        <input type="email" id="cEmail" name="cEame" placeholder="customer Email "><br/>
+        
+
+        <input type="password" id="cPassword" name="cPassword" placeholder="customer Password "><br/>
+
+        <input type="button" value="sign Up " onclick="login();"/>
+        
+
+    </body>
+    <script>
+        function _id(obj){
+            return document.getElementById(obj);
+        }
+
+        //this function will call when we click on the button 
+        async function login(){
+            let tags="";
+            let new_customer = {
+                customer: {
+                    email: _id("cEmail").value,
+                    password : _id("cPassword").value,
+                }
+            };
+           await fetch('http://localhost:750/loginCustomer?email='+_id("cEmail").value,
+                        {method:"get",headers:{ "Content-Type": "application/json"}}).then(function(resp){
+                            return resp.json();
+                        }).then(function(data){
+                            let record=JSON.parse(data);
+                            console.log(data);
+                            tags=record.customers[0].tags;
+                            localStorage.setItem('Tags',tags);
+                            console.log(localStorage.getItem("Tags"));
+                        }).catch(function (err){
+                            console.log(err);
+                        });
+
+            await fetch('http://localhost:750/getProductTagbased?Tags='+localStorage.getItem("Tags"),
+                        {method:"get",headers:{ "Content-Type": "application/json"}}).then(function(resp){
+                            return resp.json();
+                        }).then(function(data){
+                            let record=JSON.parse(data);
+                            console.log(data);
+                        }).catch(function (err){
+                            console.log(err);
+                        });
+      
+
+            }
+        
+    </script>
+
+</html>

@@ -1,0 +1,120 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <h1>All  Product data </h1>
+        <div id="productList">
+             
+        </div>
+        <input type="button" value="click kro " onclick="nextButton();"/>
+        <input type="button" value="Inventory Button" onclick="manageInventory();"/>
+    </body>
+    <script>
+        let location_ID="";
+        let inventory_item_id="";
+
+        async function onloadData(){    
+            //get the inventory id of the matched product 
+            await fetch('http://localhost:750/getProductData').then(function(resp){    
+                    return resp.json();
+                }).then(function(data){
+                    result(data);
+                }).catch(function (err){
+                    console.log(err);
+                });
+            
+            await fetch('http://localhost:750/getLocationId').then(function(resp){    
+                return resp.json();
+            }).then(function(locationData){
+               let locationID=JSON.stringify(locationData.locations);
+                locationID=JSON.parse(locationID);
+                location_ID=locationID[1].id; 
+               console.log('location ID ',location_ID);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+        //method to read data at onload 
+        onloadData();
+        
+        //this filed is used to read data on the behafafe of product ID 
+        async function readMetaFiled(){
+             await fetch('http://localhost:750/getMetaFieldId').then(function(resp){    
+                return resp.json();
+            }).then(function(locationData){
+              console.log(locationData);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+        //46893313491237
+
+    //this method is used to read the data from the 
+    function result(data){
+       for(let x in data.products){
+            if(data.products[x].title=='The 3p Fulfilled Snowboard'){
+                console.log(data.products[x]);
+                for(let y in data.products[x].variants){
+                    inventory_item_id=data.products[x].variants[y].inventory_item_id;
+                    console.log(inventory_item_id,'--',data.products[x].variants[y].inventory_quantity,'--',location_ID);
+                }
+            }
+        }
+    }
+
+    //this method is used to update the inventory of the products 
+    async function manageInventory(){
+        let new_product = {
+                location_id: location_ID,
+                inventory_item_id: inventory_item_id,
+                available_adjustment:-5,
+        };
+        console.log('Location ID -',location_ID,'Inventory ID --',inventory_item_id);
+        const res = await fetch('http://localhost:750/updateInventory',{method:"post",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+        console.log(res);
+    }
+
+
+     async function nextButton(){        
+       
+        fetch('http://localhost:750/loadMoreProductData').then(function(resp){  
+                return resp.text();
+            }).then(function(data){
+                let idF=data.lastIndexOf('<');
+                let idL=data.lastIndexOf('>');
+                data=data.slice(idF+1,idL);
+                console.log(data);
+                nxtLink=data;
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+/*
+      function getNext(nextLink){
+        return new Promise((resolve, reject) => {
+            let idF=nextLink.lastIndexOf('<');
+            let idL=nextLink.lastIndexOf('>');
+            nextLink=nextLink.slice(idF+1,idL);
+            console.log(nextLink);
+           fetch(nextLink).then(r => {
+                const headerLink = r.headers.get('link');
+                console.log(headerLink);
+                // const match = headerLink.match(/<[^;]+\/(\w+\.json[^;]+)>;\srel="next"/);
+                // const nextLink = match ? match[1] : false;
+                // if(nextLink){
+                //     console.log(nextLink);
+                //     //getNext(nextLink);
+                // } else {
+                //     resolve();
+                // }
+            });
+
+        }) 
+      }
+     
+*/
+    </script>
+</html>

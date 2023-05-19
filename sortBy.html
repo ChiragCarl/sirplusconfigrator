@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>
+            www.inventory.com
+        </title>
+    </head>
+    <body>
+        <input type="text" id="typeSortBy" placeholder="Enter Sort By in Capital Letters" /><br/>
+        <input type="text" id="typeOrderBy" placeholder="Enter Order By in small Letters"/><br/>
+        
+        <input type="button" value="sort By Price desc" onclick="getProductData()"/>
+        <input type="button" value="sort By Price asc" onclick="getProductData()"/>
+        
+        <input type="button" value="sort By Title desc" onclick="getProductData()"/>
+        <input type="button" value="sort By Title asc" onclick="getProductData()"/>
+
+        <input type="button" value="Load More products" onclick="getProductData();"/>
+
+        <input type="button" value="Get Customer Data " onclick="getcustomerTags();"/>
+        
+    </body>
+    <script>
+        // customer ID -- 6961641324837, Product ID, 8209960042789
+       async function getcustomerTags(){
+            await fetch('http://localhost:750/getSingleCustomerData?custId=6961641324837&productId=8209960042789,790,789').then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                console.log(data);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+        
+        let productID=[];
+        let inventoryID=[], metaFieldID=[],variantsID=[];
+
+        //let nextLink=`https://${Apikey}:${Password}@sirplus-food.myshopify.com/admin/api/2022-10/products.json`;
+
+
+
+        //this method is used to get the list of product data with the inventory ID 
+        //and other things after gettting the ID get the Meta field ID 
+        async function getProductData(){
+            let sortBy=document.getElementById("typeSortBy").value;
+            let orderBy=document.getElementById("typeOrderBy").value;
+            await fetch('http://localhost:750/getSortingProduct?sortBy='+sortBy+'&orderBy='+orderBy).then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                console.log(data);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+    </script>
+</html>

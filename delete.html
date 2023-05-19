@@ -1,0 +1,32 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>update Product data </h1>
+    <div id="productList">
+    </div>
+</body>
+<script>
+    
+let new_product = {
+    product: {
+        id:'8215155507493',
+        title: 'ARSLAN test3',
+        body_html: 'test',
+        Price: '15.5',
+        product_type: 'customproduct',
+        tags: 'Customproduct'
+    }
+};
+
+async function postfn() {
+    const res = await fetch('http://localhost:750/deleteProduct',{method:"delete",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+    console.log(res);
+}
+postfn();
+</script>
+
+</html>

@@ -1,0 +1,32 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>add Product data </h1>
+    <div id="productList">
+    </div>
+</body>
+<script>
+
+let new_product = {
+    product: {
+        title: 'Custom munch-3',
+        body_html: '8211611910437-3,8210129355045-5',
+        Price: '15.5',
+        product_type: 'customproduct',
+        tags: 'Custom Tags store '
+    }
+};
+
+async function postfn() {
+    
+    const res = await fetch('http://localhost:750/addSubscriptionProductId',{method:"post",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+    console.log(res);
+}
+postfn();
+</script>
+
+</html>

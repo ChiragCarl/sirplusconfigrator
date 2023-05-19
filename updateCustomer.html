@@ -1,0 +1,80 @@
+<html>
+    <body>
+        <select id="custName">
+
+        </select><br/>
+
+        <input type="text" id="cName" name="cName" placeholder="customer Name "><br/>
+        
+        <input type="email" id="cEmail" name="cEame" placeholder="customer Email "><br/>
+        
+
+        <input type="number" id="cNumber" name="cNumber" placeholder="customer Contact "><br/>
+
+        <input type="button" value=" update " onclick="updateCust();"/>
+        
+        <input type="button" value="delete " onclick="deleteCust();"/>
+
+
+    </body>
+    <script>
+        function _id(obj){
+            return document.getElementById(obj);
+        }
+
+        //this function will call when we click on the button 
+        async function updateCust(){
+            let new_customer = {
+                customer: {
+                    id:'6919284228389',
+                    tags: 'Winter,Sport,Accessory'
+                }
+            };
+           await fetch('http://localhost:750/updateCustomer',
+                        {method:"put",headers:{ "Content-Type": "application/json"},
+                        body:JSON.stringify(new_customer)}).then(function(resp){
+                            return resp.json();
+                        }).then(function(data){
+                            console.log(data);
+                        }).catch(function (err){
+                           console.log(err);
+                        });
+                    
+        }
+
+        async function deleteCust(){
+            let new_customer = {
+                customer: {
+                    id:_id("custName").value,
+                }
+            };
+           await fetch('http://localhost:750/deleteCustomer',
+                        {method:"delete",headers:{ "Content-Type": "application/json"},
+                        body:JSON.stringify(new_customer)}).then(function(resp){
+                            return resp.json();
+                        }).catch(function (err){
+                           console.log(err);
+                        });
+        }
+
+        //get the name of customer 
+        fetch('http://localhost:750/getCustomerData').then(function(resp){
+            return resp.json();      
+        }).then(function(data){
+            customerDetails(data);
+        }).catch(function(err){
+            console.log(err);
+        });
+        let cList="";
+        function customerDetails(data){
+            for (let item in data['customers']){
+                let findData=`
+                    <option value=${data['customers'][item].id}>${data['customers'][item].first_name}</option>
+                `;
+                cList+=findData;
+            }
+            document.getElementById('custName').innerHTML=cList;
+        }
+    </script>
+
+</html>

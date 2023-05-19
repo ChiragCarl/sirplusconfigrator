@@ -1,0 +1,44 @@
+<html>
+    <body>
+        <input type="text" id="cName" name="cName" placeholder="customer Name "><br/>
+        
+        <input type="email" id="cEmail" name="cEame" placeholder="customer Email "><br/>
+        
+
+        <input type="number" id="cNumber" name="cNumber" placeholder="customer Contact "><br/>
+
+        <input type="button" value="sign Up " onclick="register();"/>
+        
+
+    </body>
+    <script>
+        function _id(obj){
+            return document.getElementById(obj);
+        }
+
+        //this function will call when we click on the button 
+        async function register(){
+            let new_customer = {
+                customer: {
+                    email: _id("cEmail").value,
+                    first_name : _id("cName").value,
+                    phone: _id("cNumber").value,
+                    tags: 'Customproduct',
+                    password: 'testing',
+                    password_confirmation:'testing'
+                }
+            };
+           await fetch('http://localhost:750/addCustomer',
+                        {method:"post",headers:{ "Content-Type": "application/json"},
+                        body:JSON.stringify(new_customer)}).then(function(resp){
+                            return resp.json();
+                        }).then(function (data){
+                            console.log(data);
+                        }).catch(function (err){
+                            alert("email already used ");
+                        });
+            }
+        
+    </script>
+
+</html>

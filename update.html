@@ -1,0 +1,33 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <h1>update Product data </h1>
+    <div id="productList">
+    </div>
+</body>
+<script>
+    
+let new_product = {
+    product: {
+        id:'8211611910437',
+        title: 'ARSLAN test3',
+        body_html: '<p>testing</p>',
+        Price: '15.5',
+        product_type: 'customproduct',
+        tags: 'Custom Tags store '
+    }
+};
+
+async function postfn() {
+    
+    const res = await fetch('http://localhost:750/updateProduct?product_Id=8211611910437',{method:"put",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+    console.log(res);
+}
+postfn();
+</script>
+
+</html>

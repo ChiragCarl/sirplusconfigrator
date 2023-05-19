@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <h1>All customer </h1>
+        <div id="orderList">
+             
+        </div>
+    </body>
+    <script>
+        fetch('http://localhost:750/getCustomerData').then(function(resp){
+            return resp.json();      
+        }).then(function(data){
+            console.log(data);customerDetails(data);
+        }).catch(function(err){
+            console.log(err);
+        });
+
+        function customerDetails(data){
+            let html="";
+            for (let item in data['customers']){
+                let findData=`
+                    <h2>${data['customers'][item].id}</h2><hr/>
+                `;
+                html+=findData;
+            }
+            document.getElementById('orderList').innerHTML=html;
+        }
+    </script>
+</html>

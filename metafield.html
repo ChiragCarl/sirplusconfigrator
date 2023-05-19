@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>
+            www.inventorymetafiledData.com
+        </title>
+    </head>
+    <body>
+        <div id="expiryDate"></div>
+    </body>
+    <script>
+        let productRecord=[];
+        let inventoryID=[], metaFieldID=[],variantsID=[];
+        let idx=0;
+
+        //this method is used to get the list of product data with the inventory ID 
+        //and other things after gettting the ID get the Meta field ID 
+        async function getAllProductData(){
+            await fetch('http://localhost:750/getRecommendation').then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                productRecord=data;
+               // result(productRecord);
+                console.log(data);    
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+        let Ndata="";
+        
+        //get all data 
+        async function result(productRecord){
+            //Ndata=data.products[idx].id+"---"+data.products[idx].title;
+            getProductMetafield(productRecord.products[idx].id);
+            document.getElementById("expiryDate").innerHTML+=Ndata+"<hr/>";
+            idx++;
+            result(productRecord);
+        }
+        
+        async function getProductMetafield(productId){
+            await fetch('http://localhost:750/getMetaFieldId?product_Id='+productId).then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                    Ndata+="---"+data.metafields[0].value;
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+        //calling the onload function 
+        getAllProductData();
+
+    </script>
+</html>

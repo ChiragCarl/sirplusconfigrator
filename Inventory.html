@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <title>
+            www.inventory.com
+        </title>
+    </head>
+    <body>
+        <input type="button" value="hit_API" onclick="getProductData()"/>
+    </body>
+    <script>
+        let productID=[];
+        let inventoryID=[], metaFieldID=[],variantsID=[];
+        //this method is used to get the list of product data with the inventory ID 
+        //and other things after gettting the ID get the Meta field ID 
+        async function getProductData(){
+            await fetch('http://localhost:750/getProductData').then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                result(data);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
+
+        //now try to update the price of the product by getting the metafield and other things 
+        async function updatePrice(){
+            let new_product = {
+                product: {
+                    id:productID[idx],
+                    title: 'testing products',
+                    body_html: '<p>test</p>',
+                    Price: '15.5',
+                    product_type: 'customproduct',
+                    tags: 'Custom Tags'
+                }
+            };
+            const res = await fetch('http://localhost:750/updateProduct?product_Id='+productID[idx],{method:"put",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+            console.log(res);
+        }
+        
+        let idx=-1;
+        //this code would be used to get the data from the variants of each products 
+        async function updateProductPriceBased(){
+            idx+=1; 
+        }
+
+
+        //this function is used to get the metafield of a specific products 
+        async function getMetaFieldId(){
+            idx+=1;
+            //on the bases of the Product ID we need to get the Metafiled ID 
+            if(productID.length>0 && idx<productID.length){
+                await fetch('http://localhost:750/getMetaFieldId?product_Id='+productID[idx]).then(function(resp){
+                    return resp.json();
+                }).then(function(metaFieldData){
+                    //check the meta field is availabel or not 
+                    if(metaFieldData.metafields.length>0){
+                        console.log('productID',productID[idx],'--',idx,"---",metaFieldData);
+                        //if matched then check the key and values 
+                        if(metaFieldData.metafields[0].key==='item_id' && metaFieldData.metafields[0].value==='19315'){
+                            console.log(metaFieldData.metafields[0].key,'---- value---',metaFieldData.metafields[0].value);
+                            //set the data to update 
+                            let new_product = {
+                                product: {
+                                    id:productID[idx],
+                                    title: 'testing products',
+                                    body_html: '<p>test</p>',
+                                    product_type: 'custom product',
+                                    tags: 'Water,snowboard'
+                                }
+                            };
+
+
+                          const res= fetch('http://localhost:750/updateProduct?product_Id='+productID[idx],{method:"put",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+                          console.log(res);
+                        }      
+                    }
+                    getMetaFieldId();
+                }).catch(function(err){
+                    console.log(err);
+                });
+            }
+        }
+        //this method is used to read the 
+
+
+
+
+      async  function result(data){
+            for(let x in data.products){
+                productID.push(data.products[x].id);
+                //console.log(data.products[x].id);
+                for(let y in data.products[x].variants){
+                    variantsID.push(data.products[x].variants[y].id);
+                    inventoryID.push(data.products[x].variants[y].inventory_item_id);
+                }
+            }
+            console.log(productID);
+            console.log(inventoryID);
+            console.log(variantsID);   
+          //  getMetaFieldId();
+         // updateProductPriceBased();
+
+            await fetch('http://localhost:750/getVariantFieldData').then(function(resp){
+                return resp.json();
+            }).then (function (data){
+                console.log('variants data ',data);
+            }).catch(function (err){
+                console.log(err);
+            });
+
+            let new_product = {
+                variant: {
+                    id:'44844759777573',
+                    price:'2600.00'
+                }
+            };
+            const res= await fetch('http://localhost:750/updateProductPrice',{method:"put",headers:{ "Content-Type": "application/json"},body:JSON.stringify(new_product)})
+            console.log(res);
+        }
+    </script>
+</html>
