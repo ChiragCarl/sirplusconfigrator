@@ -21,23 +21,23 @@ app.use(cors());
 
 
 //demo site creds 
-// let Apikey="ae56632494967a1f0e1736c8f47de10f";
-// let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
-// let Password="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";
-// const shopName = 'demoappsirplus';
-// //store front api key demo site 
-// let apiKey="cc729bf5fbb7a8633dfa2b2f93f1121a";
-// let rechargeApi='sk_test_1x1_c0d5681c1dcd49870eeabd90c1e9068ab05b7612166f821df874b76334c8a249';
+let Apikey="ae56632494967a1f0e1736c8f47de10f";
+let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
+let Password="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";
+const shopName = 'demoappsirplus';
+//store front api key demo site 
+let apiKey="cc729bf5fbb7a8633dfa2b2f93f1121a";
+let rechargeApi='sk_test_1x1_c0d5681c1dcd49870eeabd90c1e9068ab05b7612166f821df874b76334c8a249';
 
 
 //console.log(process.env.shopName);
 //client site creds
-let Apikey=process.env.Apikey; //"89ddc5a0f041b4ce30d407b90fab38ed";
-let APIsecretkey=process.env.APIsecretkey //"a7219f0fb3b02e7a4a33ebf52ad2125b";
-let Password= process.env.Password; //"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";
-const shopName =process.env.shopName; // sirplus-food
-//store front api key of client side 
-let apiKey=process.env.apikey; //"8b161343b3325242e1abf4be1b9538a7";
+// let Apikey=process.env.Apikey; //"89ddc5a0f041b4ce30d407b90fab38ed";
+// let APIsecretkey=process.env.APIsecretkey //"a7219f0fb3b02e7a4a33ebf52ad2125b";
+// let Password= process.env.Password; //"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";
+// const shopName =process.env.shopName; // sirplus-food
+// //store front api key of client side 
+// let apiKey=process.env.apikey; //"8b161343b3325242e1abf4be1b9538a7";
 
 
 let nextLink=`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2022-10/products.json`;
