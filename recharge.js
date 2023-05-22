@@ -695,40 +695,23 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
     
     const product = {
         //"external_product_id":8211611910437,
-        "title": "recharge",
-        "options": [
-          {
-            "name": "Size",
-            "position": 0,
-            "values": [
-              {"label": "small", "position": 0},
-              {"label": "medium", "position": 1},
-              {"label": "large", "position": 2}
-            ]
+        "discount_amount": 0.0,
+        "discount_type": "percentage",
+        "shopify_product_id": 8211611910437,
+        "subscription_defaults": {
+            "charge_interval_frequency": 1,
+            "modifiable_properties": [
+              "color",
+              "name",
+              "quantity",
+              "size",
+            ],
+            "order_interval_frequency_options": [
+              "1","2","3","4"
+            ],
+            "order_interval_unit": "weeks",
+            "storefront_purchase_options": "subscription_only"
           }
-        ],
-        "variants": [
-          {
-            "external_variant_id": "9",
-            "sku": "CLO123",
-            "title": "Recharge Logo Shirt - Small",
-            "taxable": true,
-            "tax_code": "CLOTHING",
-            "prices": {
-              "compare_at_price": "14.22",
-              "unit_price": "12.22"
-            },
-            "dimensions": {
-              "weight": 1234.5
-            },
-            "option_values": [
-              {
-                "label": "small"
-              }
-            ]
-          }
-        ],
-        "vendor": "recharge app"
       };
       
 //   const productData = {
