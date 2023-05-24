@@ -21,24 +21,24 @@ app.use(cors());
 
 
 //demo site creds 
-let Apikey="ae56632494967a1f0e1736c8f47de10f";
-let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
-let Password="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";
-const shopName = 'demoappsirplus';
-//store front api key demo site 
-let apiKey="cc729bf5fbb7a8633dfa2b2f93f1121a";
-let rechargeApi='sk_test_1x1_c0d5681c1dcd49870eeabd90c1e9068ab05b7612166f821df874b76334c8a249';
+// let Apikey="ae56632494967a1f0e1736c8f47de10f";
+// let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
+// let Password="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";
+// const shopName = 'demoappsirplus';
+// //store front api key demo site 
+// let apiKey="cc729bf5fbb7a8633dfa2b2f93f1121a";
+// let rechargeApi='sk_test_1x1_c0d5681c1dcd49870eeabd90c1e9068ab05b7612166f821df874b76334c8a249';
 
 
 //console.log(process.env.shopName);
 //client site creds
-// let Apikey=process.env.Apikey; //"89ddc5a0f041b4ce30d407b90fab38ed";
-// let APIsecretkey=process.env.APIsecretkey //"a7219f0fb3b02e7a4a33ebf52ad2125b";
-// let Password= process.env.Password; //"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";
-// const shopName =process.env.shopName; // sirplus-food
-// //store front api key of client side 
-// let apiKey=process.env.apikey; //"8b161343b3325242e1abf4be1b9538a7";
-
+let Apikey="89ddc5a0f041b4ce30d407b90fab38ed";
+let APIsecretkey="a7219f0fb3b02e7a4a33ebf52ad2125b";
+let Password="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";
+const shopName="sirplus-food";
+//store front api key of client side 
+let apiKey="8b161343b3325242e1abf4be1b9538a7";
+let rechargeApi='sk_1x1_3dba0a68f8c201453d73ae5228a595dd754772f247d88cbb5ea27194ef3ff43f';
 
 let nextLink=`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2022-10/products.json`;
 
@@ -692,48 +692,39 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
-    
     const product = {
-        //"external_product_id":8211611910437,
+        //"external_product_id":'8211611910437',
         "discount_amount": 0.0,
         "discount_type": "percentage",
         "shopify_product_id": 8211611910437,
         "subscription_defaults": {
             "charge_interval_frequency": 1,
+            "cutoff_day_of_month":null,
+            "cutoff_day_of_week":null,
+            "expire_after_specific_number_of_charges":null,
             "modifiable_properties": [
-              "color",
-              "name",
-              "quantity",
-              "size",
+            "color",
+            "name",
+            "quantity",
+            "size",
             ],
             "order_interval_frequency_options": [
-              "1","2","3","4"
+            "1"
             ],
-            "order_interval_unit": "weeks",
+            "order_interval_unit": "month",
             "storefront_purchase_options": "subscription_only"
-          }
+        }
       };
       
-//   const productData = {
-//     title: 'Your Product Title',
-//     variants: [
-//       {
-//         title: 'Variant 1',
-//         price: 10.99,
-//         sku: 'variant-1-sku'
-//       },
-//       // Add more variants if needed
-//     ]
-//   };
-
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
-    const response = await axios.post(apiUrl,product,{
+    const response = await axios.post(apiUrl,{
       headers: {
-        'X-Recharge-Access-Token': 'sk_test_1x1_df6e99733636a80870340d76e4ef631e906d47d28b721b4c993a81ce1d2cd253', // Replace with your Recharge app access token
+        'X-Recharge-Version': '2021-11',
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+        'X-Recharge-Access-Token': 'sk_test_1x1_df6e99733636a80870340d76e4ef631e906d47d28b721b4c993a81ce1d2cd253', // Replace with your Recharge app access token
+      },body:JSON.stringify(product)
     });
   
     console.log('Product creation response:', response.data);
@@ -1024,6 +1015,6 @@ app.get("/allOrders",(req,resp)=>{
     });
 });
 
-app.listen(3000);
+//app.listen(3000);
 
-//app.listen(750);
+app.listen(750);
