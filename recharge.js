@@ -693,15 +693,11 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
     const product = {
-        //"external_product_id":'8211611910437',
-        "discount_amount": 0.0,
+        "discount_amount": 10.0,
         "discount_type": "percentage",
         "shopify_product_id": 8211611910437,
         "subscription_defaults": {
             "charge_interval_frequency": 1,
-            "cutoff_day_of_month":null,
-            "cutoff_day_of_week":null,
-            "expire_after_specific_number_of_charges":null,
             "modifiable_properties": [
             "color",
             "name",
@@ -718,13 +714,11 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
       
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
-    const response = await axios.post(apiUrl,{
+    const response = await axios.post(apiUrl,product,{
       headers: {
-        'X-Recharge-Version': '2021-11',
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-Recharge-Access-Token': 'sk_test_1x1_df6e99733636a80870340d76e4ef631e906d47d28b721b4c993a81ce1d2cd253', // Replace with your Recharge app access token
-      },body:JSON.stringify(product)
+        'X-Recharge-Access-Token': rechargeApi, // Replace with your Recharge app access token
+      }
     });
   
     console.log('Product creation response:', response.data);
@@ -1015,6 +1009,6 @@ app.get("/allOrders",(req,resp)=>{
     });
 });
 
-app.listen(3000);
+//app.listen(3000);
 
-//app.listen(750);
+app.listen(750);
