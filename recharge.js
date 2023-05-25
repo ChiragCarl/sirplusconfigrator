@@ -693,15 +693,11 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
     const product = {
-        //"external_product_id":'8211611910437',
         "discount_amount": 0.0,
         "discount_type": "percentage",
         "shopify_product_id": 8211611910437,
         "subscription_defaults": {
             "charge_interval_frequency": 1,
-            "cutoff_day_of_month":null,
-            "cutoff_day_of_week":null,
-            "expire_after_specific_number_of_charges":null,
             "modifiable_properties": [
             "color",
             "name",
