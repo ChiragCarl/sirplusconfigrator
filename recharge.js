@@ -150,7 +150,7 @@ const productGetByQuery = async (afterCursor = null) => {
 };
 
 
-productGetByQuery(nextPageCursor);
+//productGetByQuery(nextPageCursor);
 
 
 
