@@ -56,7 +56,7 @@ const productGetByQuery = async (afterCursor = null) => {
     try {
      const response = await axios.post(`https://${shopName}.myshopify.com/api/2021-04/graphql.json`, {
       query: `query($cursor: String) {
-           products(first: 250,after: $cursor) {
+           products(first: 250 ,after: $cursor) {
              pageInfo {
                hasNextPage
                endCursor
@@ -165,9 +165,10 @@ app.get("/getSortingProduct",async (req,resp)=>{
 //global sorting format to get the sorted products 
 const prodcutSortByQuery = async (afterCursor = null,sortBy,orderBy) => {
     try {
+    let tags="Snowboard";
      const response = await axios.post(`https://${shopName}.myshopify.com/api/2021-04/graphql.json`, {
       query: `query($cursor: String) {
-           products(first: 250,after: $cursor, sortKey:${sortBy}, reverse:${orderBy}) {
+           products(first: 250, after: $cursor, sortKey:${sortBy}, reverse:${orderBy}) {
              pageInfo {
                hasNextPage
                endCursor
