@@ -693,6 +693,7 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
     const product = {
+        "discount_amount": 0.0,
         "discount_amount": 10.0,
         "discount_type": "percentage",
         "shopify_product_id": 8211611910437,
