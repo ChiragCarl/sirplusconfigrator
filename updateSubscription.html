@@ -53,7 +53,7 @@
         //create an New Product into the recharge product section
         async function storeProductRecharge(){
 
-            await fetch('http://localhost:750/addProductRechargeApp',
+            await fetch('https://sirplusconfigrator-9pv9.onrender.com/addProductRechargeApp',
             { method:"POST",headers:{ "Content-Type": "application/json"}})
             .then(function(resp){
                 return resp.json();

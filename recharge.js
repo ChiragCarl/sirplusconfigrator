@@ -44,14 +44,14 @@ let nextLink=`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/
 
 let nextCursor=null;
 
+
+
+
 app.get("/getSortingProduct",async (req,resp)=>{
     let sortBy=req.query.sortBy;
     let orderBy=req.query.orderBy;
-    // let sortBy='PRICE';
-    // let orderBy='false';
     let record=await prodcutSortByQuery(nextCursor,sortBy,orderBy);
     console.log(nextCursor);
-    //console.log(record);
     resp.send(record);
 });
 
@@ -711,34 +711,19 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
             "storefront_purchase_options": "subscription_only"
         }
       };
-      
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
-    const response = await axios.post(apiUrl,product,{
+    const response = await axios.post(apiUrl,{
       headers: {
         'Content-Type': 'application/json',
         'X-Recharge-Access-Token': rechargeApi, // Replace with your Recharge app access token
-      }
+      },body:JSON.stringify(product),
     });
-  
     console.log('Product creation response:', response.data);
   } catch (error) {
     console.log('Product creation error:', error.message);
   }
-    // const options={
-    //     'method': 'POST',
-    //     'url':`https://api.rechargeapps.com/products`,
-    //     'headers':{
-    //         'X-Recharge-Version': '2021-11',
-    //         'content-type':'Application/json',
-    //         'X-Recharge-Access-Token':rechargeApi
-    //     },body:JSON.stringify(new_products)
-    // };
-    // request(options, function(error,response){
-    //     if(error)throw new Error(error);
-    //     resp.send(response.body);
-    //     console.log(response.body);
-    // });
+ 
 });
 
 
