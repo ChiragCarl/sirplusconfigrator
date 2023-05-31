@@ -42,8 +42,115 @@ let rechargeApi='sk_1x1_3dba0a68f8c201453d73ae5228a595dd754772f247d88cbb5ea27194
 
 let nextLink=`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2022-10/products.json`;
 
-let nextCursor=null;
+let nextPageCursor=null, nextCursor=null;
 
+app.get("/getProductByGraphQl",async (req,resp)=>{  
+    let record=await productGetByQuery(nextPageCursor);
+    console.log(nextPageCursor);
+    resp.send(record);
+});
+
+
+//global sorting format to get the sorted products 
+const productGetByQuery = async (afterCursor = null) => {
+    try {
+     const response = await axios.post(`https://${shopName}.myshopify.com/api/2021-04/graphql.json`, {
+      query: `query($cursor: String) {
+           products(first: 250,after: $cursor) {
+             pageInfo {
+               hasNextPage
+               endCursor
+              }
+            edges {
+             node {
+              id
+              title
+              description
+              tags
+              availableForSale
+              createdAt
+              totalInventory
+              variants(first: 1) {
+               edges {
+                node {
+                 id
+                 price
+                 compareAtPrice
+                }
+               }
+              }
+              images(first: 1) {
+               edges {
+                node {
+                 originalSrc
+                }
+               }
+              }
+              metafields(first: 5) {
+               edges {
+                node {
+                 key
+                 value
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+      `, variables: {
+       cursor: afterCursor
+      }
+     }, {
+      headers: {
+       'X-Shopify-Storefront-Access-Token': apiKey
+      }
+     });
+     const products = response.data.data.products;
+     let productData=[];
+     products.edges.forEach((product) => {
+     let imgurl="";
+     let { id, title, description,tags, availableForSale,totalInventory,createdAt} = product.node;
+   
+     const img=product.node.images.edges;
+     imgurl=img.length>0?product.node.images.edges[0].node.originalSrc:null;
+     
+     const price = product.node.variants.edges[0].node.price;
+     const compareAtPrice = product.node.variants.edges[0].node.compareAtPrice;
+     let varient_Id = product.node.variants.edges[0].node.id;
+      // const inventoryItemId= product.node.variants.edges[0].node.inventoryItem.id;
+           let idx=id.lastIndexOf('/');
+           id=id.slice(idx+1,id.length);
+           let vIds=varient_Id.lastIndexOf('/');
+           varient_Id =varient_Id .slice(vIds+1,vIds.length);
+           let data={
+               "id":id,
+               "Title":title,
+               "Description":description,
+               "Tags":tags,
+               "Price":price,
+               "Inventory_Quantity":totalInventory,
+               "varient_Id":varient_Id,
+               "compare_At_Price":compareAtPrice,
+               "Image":img
+           }
+           if(totalInventory>0 && price>0 && compareAtPrice>0){
+                productData.push(data);
+                console.log('available for sale: ',availableForSale,'--',totalInventory,'---',price);
+           }
+     });
+       if (products.pageInfo.hasNextPage) {
+        nextPageCursor = products.pageInfo.endCursor;
+       }
+      return productData;
+    } catch (error) {
+     console.log('An error occurred:', error);
+     return error;
+    }
+};
+
+
+productGetByQuery(nextPageCursor);
 
 
 
