@@ -54,9 +54,9 @@ app.get("/getProductByGraphQl",async (req,resp)=>{
 //global sorting format to get the sorted products 
 const productGetByQuery = async (afterCursor = null) => {
     try {
-     const response = await axios.post(`https://${shopName}.myshopify.com/api/2021-04/graphql.json`, {
+     const response = await axios.post(`https://${shopName}.myshopify.com/api/2021-10/graphql.json`, {
       query: `query($cursor: String) {
-           products(first: 250 ,after: $cursor) {
+           products(first: 250 ,query: "published_status:published AND status:active",after: $cursor) {
              pageInfo {
                hasNextPage
                endCursor
@@ -118,7 +118,7 @@ const productGetByQuery = async (afterCursor = null) => {
      const price = product.node.variants.edges[0].node.price;
      const compareAtPrice = product.node.variants.edges[0].node.compareAtPrice;
      let varient_Id = product.node.variants.edges[0].node.id;
-      // const inventoryItemId= product.node.variants.edges[0].node.inventoryItem.id;
+    // const inventoryItemId= product.node.variants.edges[0].node.inventoryItem.id;
            let idx=id.lastIndexOf('/');
            id=id.slice(idx+1,id.length);
            let vIds=varient_Id.lastIndexOf('/');
@@ -800,11 +800,10 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
-    console.log('ok');
-    const product = {
-        "discount_amount": 10.0,
+   /* const product = {
+        "discount_amount": 0.0,
         "discount_type": "percentage",
-        "shopify_product_id": 8211612139813,
+        "shopify_product_id": 8259750396171,
         "subscription_defaults": {
             "charge_interval_frequency": 7,
             "modifiable_properties": [
@@ -819,10 +818,10 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
             "order_interval_unit": "days",
             "storefront_purchase_options": "subscription_only"
         }
-      };
+      };*/
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
-    const response = await axios.post(apiUrl,product,{
+    const response = await axios.post(apiUrl,req.body,{
       headers: {
         'Content-Type': 'application/json',
         'X-Recharge-Access-Token': rechargeApi, // Replace with your Recharge app access token
