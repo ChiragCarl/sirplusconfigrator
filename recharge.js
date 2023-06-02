@@ -261,7 +261,7 @@ const prodcutSortByQuery = async (afterCursor = null,sortBy,orderBy) => {
     }
 };
 
-//prodcutSortByQuery(nextCursor,'CREATED_AT','true');
+prodcutSortByQuery(nextCursor,'CREATED_AT','true');
 
 
 // //database connection to connect  
@@ -800,6 +800,7 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
+    console.log(req.body);
    /* const product = {
         "discount_amount": 0.0,
         "discount_type": "percentage",
@@ -828,8 +829,10 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
       }
     });
     console.log('Product creation response:', response.data);
+    resp.send(response.data);
   } catch (error) {
     console.log('Product creation error:', error.message);
+    resp.send(error.message);
   }
 });
 
@@ -1103,4 +1106,4 @@ app.get("/allOrders",(req,resp)=>{
 
 app.listen(3000);
 
-//app.listen(750);
+app.listen(750);
