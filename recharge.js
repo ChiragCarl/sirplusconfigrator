@@ -804,7 +804,7 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
     const product = {
         "discount_amount": 0.0,
         "discount_type": "percentage",
-        "shopify_product_id": 8262072074507,
+        "shopify_product_id": 8262076236043,
         "subscription_defaults": {
             "charge_interval_frequency": 7,
             "modifiable_properties": [
