@@ -20,7 +20,7 @@ app.use(cors());
  //let nextLink=`https://89ddc5a0f041b4ce30d407b90fab38ed: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@demoappsirplus.myshopify.com/admin/api/2022-10/products/8209960370469.json`;
 
 
-//demo site creds 
+// //demo site creds 
 // let Apikey="ae56632494967a1f0e1736c8f47de10f";
 // let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
 // let Password="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";
@@ -785,7 +785,7 @@ app.put("/updateProductPrice",(req,resp)=>{
 app.post("/addSubscriptionProductId", (req,resp)=>{
     const options={
         'method': 'POST',
-        'url':`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2022-10/products.json`,
+        'url':`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2021-07/products.json`,
         'headers':{
             'content-type':'Application/json'
         },body:JSON.stringify(req.body)
@@ -801,10 +801,10 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
     console.log(req.body);
-   /* const product = {
+    const product = {
         "discount_amount": 0.0,
         "discount_type": "percentage",
-        "shopify_product_id": 8259750396171,
+        "shopify_product_id": 8262072074507,
         "subscription_defaults": {
             "charge_interval_frequency": 7,
             "modifiable_properties": [
@@ -819,7 +819,7 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
             "order_interval_unit": "days",
             "storefront_purchase_options": "subscription_only"
         }
-      };*/
+      };
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
     const response = await axios.post(apiUrl,req.body,{
