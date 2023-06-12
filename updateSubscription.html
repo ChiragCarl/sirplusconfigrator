@@ -1,4 +1,7 @@
 <html>
+    <head>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
     <body>
         <select id="custName">
 
@@ -28,6 +31,8 @@
 
         <input type="button" value=" get All orders  " onclick="getAllordersFromRecharge();"/>
 
+        <input type="button" value=" get All sorted Products " onclick="getSortedProduct();"/>
+
 
     </body>
     <script>
@@ -36,6 +41,17 @@
         allSubscriptionID=[];
         function _id(obj){
             return document.getElementById(obj);
+        }
+
+        async function getSortedProduct(){
+            sortType="sortBy=PRICE&orderBy=true";
+           await fetch('http://localhost:750/getSortingProduct?'+sortType).then(function(resp){
+                return resp.json();
+            }).then(function(data){
+                console.log(data);
+            }).catch(function (err){
+                console.log(err);
+            });
         }
 
         async function createNewCustomerRecharge(){
@@ -52,34 +68,72 @@
 
         //create an New Product into the recharge product section
         async function storeProductRecharge(){
-            const product = {
-                "discount_amount": 0.0,
-                "discount_type": "percentage",
-                "shopify_product_id": 8262076236043,
-                "subscription_defaults": {
-                    "charge_interval_frequency": 7,
-                    "modifiable_properties": [
-                    "color",
-                    "name",
-                    "quantity",
-                    "size",
-                    ],
-                    "order_interval_frequency_options": [
-                    "7"
-                    ],
-                    "order_interval_unit": "days",
-                    "storefront_purchase_options": "subscription_only"
+
+            let new_product = {
+                product: {
+                    title: 'Biscuit-47',
+                    body_html: 'This is a delicious biscuit.',
+                    product_type: 'Subscription Product',
+                    tags: 'Subscription',
+                        variants: [
+                        {
+                            price: '12.2',
+                            sku: 'BISCUIT001',
+                            inventory_management: 'shopify',
+                            inventory_quantity: 1000
+                        }
+                    ]
                 }
             };
 
-            await fetch('http://localhost:750/addProductRechargeApp',
-            { method:"POST",headers:{ "Content-Type": "application/json"},body:JSON.stringify(product)})
-            .then(function(resp){
-                return resp.json();
-            }).then (function(data){
-                console.log(data);
-            })
-        }
+            let productId=0;
+            axios.post('http://localhost:750/addSubscriptionProductId',new_product).
+            then(function({data}){
+                console.log("main data", data);
+                // here we need to create the product in the recharge app also to generate the subscription order 
+                productId = data.product.id;
+                console.log("main product", productId, typeof productId)
+                //window.ReChargeWidget.createWidget({ productId: subsProdId, injectionParent: '.cart-total-box' });
+                
+            
+                // setTimeout(function(){        
+                //     const product = {
+                //         "discount_amount": 10.0,
+                //         "discount_type":"percentage",
+                //         "shopify_product_id": productId,
+                //         "subscription_defaults": {
+                //             "charge_interval_frequency": 7,
+                //             "modifiable_properties": [
+                //             "color",
+                //             "name",
+                //             "quantity",
+                //             "size",
+                //             ],
+                //             "order_interval_frequency_options": [
+                //             "7"
+                //             ],
+                //             "order_interval_unit": "days",
+                //             "storefront_purchase_options": "subscription_only"
+                //         } 
+                //     };    
+                //     console.log("psot data", product)   
+                //     console.log('types of ',typeof product.shopify_product_id);
+                //     axios.post('http://localhost:750/addProductRechargeApp',product)
+                //     .then (function({data}){
+                //         console.log(data);
+                //     });
+
+                // },1000);
+
+                }).catch(function (err){
+                    console.log('error from recharge APp ',err);
+                });
+               
+        
+            }
+
+
+        
 
         //this code can be used to get all orders from the recharge 
        async function getAllordersFromRecharge(){

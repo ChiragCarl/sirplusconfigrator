@@ -261,7 +261,7 @@ const prodcutSortByQuery = async (afterCursor = null,sortBy,orderBy) => {
     }
 };
 
-prodcutSortByQuery(nextCursor,'CREATED_AT','true');
+//prodcutSortByQuery(nextCursor,'PRICE','true');
 
 
 // //database connection to connect  
@@ -801,38 +801,21 @@ app.post("/addSubscriptionProductId", (req,resp)=>{
 //add Product into   the Subscription plan  
 app.post("/addProductRechargeApp",async(req,resp)=>{
     console.log(req.body);
-    const product = {
-        "discount_amount": 0.0,
-        "discount_type": "percentage",
-        "shopify_product_id": 8262076236043,
-        "subscription_defaults": {
-            "charge_interval_frequency": 7,
-            "modifiable_properties": [
-            "color",
-            "name",
-            "quantity",
-            "size",
-            ],
-            "order_interval_frequency_options": [
-            "7"
-            ],
-            "order_interval_unit": "days",
-            "storefront_purchase_options": "subscription_only"
-        }
-      };
   try {
     let apiUrl=`https://api.rechargeapps.com/products`;
     const response = await axios.post(apiUrl,req.body,{
       headers: {
         'Content-Type': 'application/json',
         'X-Recharge-Access-Token': rechargeApi, // Replace with your Recharge app access token
+        'X-Recharge-Version':'2021-01',
+        'accept':'application/json',
       }
     });
     console.log('Product creation response:', response.data);
     resp.send(response.data);
   } catch (error) {
-    console.log('Product creation error:', error.message);
-    resp.send(error.message);
+    console.log('Product creation error:', error);
+    resp.send(error);
   }
 });
 
