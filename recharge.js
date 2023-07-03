@@ -19,7 +19,7 @@ app.use(cors());
  
  //let nextLink=`https://89ddc5a0f041b4ce30d407b90fab38ed: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@demoappsirplus.myshopify.com/admin/api/2022-10/products/8209960370469.json`;
 
-
+ //?customer_id=7054280556811
 // //demo site creds 
 // let Apikey="ae56632494967a1f0e1736c8f47de10f";
 // let APIsecretkey="1504b4bd5115633af2e09350daf6dc1b";
@@ -820,6 +820,35 @@ app.post("/addProductRechargeApp",async(req,resp)=>{
 });
 
 
+//44844759875877,44844759744805
+//try to create the bundle into the recharge APP dynamically 
+const createSubscriptionProduct = async (productTitle, price, variantIds) => {
+    const url = 'https://api.rechargeapps.com/subscription_products';
+  
+    const headers = {
+      'X-Recharge-Access-Token': rechargeApi,
+      'Content-Type': 'application/json',
+      'X-Recharge-Version':'2021-01',
+      'accept':'application/json'
+    };
+  
+    const data = {
+      subscription_product: {
+        title: productTitle,
+        price: price,
+        variant_ids: variantIds,
+      },
+    };
+  
+    try {
+      const response = await axios.post(url, data, { headers });
+      console.log('created Bundle ',response.data);
+    } catch (error) {
+      console.error('while creating the bundle error ',error);
+    }
+  };
+
+ // createSubscriptionProduct('Dynamic Bundle', 19.99, ['44844759875877', '44844759744805']);
 
 //create a New cusotmer inside the Recharge Customer Section when ever customer select the subscription then 
 //it will create only once for customer 
@@ -1072,21 +1101,40 @@ app.get("/allCustomerRecharge",(req,resp)=>{
 });
 
 
-app.get("/allOrders",(req,resp)=>{
-    const options={
-        'method': 'GET',
-        'url':`https://api.rechargeapps.com/orders`,
-        'headers':{
-            'X-Recharge-Version': '2021-11',
-            'X-Recharge-Access-Token':rechargeApi
-        }
-    };
-    request(options, function(error,response){
-        if(error)throw new Error(error);
-        resp.send(response.body);
-    });
+app.get("/allOrders", async(req,resp)=>{
+    console.log(req.query.Id);
+    let custId=req.query.Id;
+    let allCustomer=[];
+    let rechargeCustomerId="";
+    let {data}=await axios.get('https://api.rechargeapps.com/customers',
+    {headers:{ 'X-Recharge-Version': '2021-11','X-Recharge-Access-Token':rechargeApi}})
+    if(data){
+        allCustomer=data.customers;
+        for(let x=0;x<allCustomer.length;x++){
+            if(allCustomer[x].external_customer_id.ecommerce==custId){
+                rechargeCustomerId=allCustomer[x].id;
+                console.log('Recharge Customer ID---',rechargeCustomerId);
+            }   
+        }      
+        rechargeCustomerId=parseInt(rechargeCustomerId);
+        const options={
+            'method': 'GET',
+            'url':`https://api.rechargeapps.com/orders?customer_id=${rechargeCustomerId}`,
+            'headers':{
+                'X-Recharge-Version': '2021-01',
+                'X-Recharge-Access-Token':rechargeApi,
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            }
+        };
+        request(options, function(error,response){
+            if(error)throw new Error(error);
+            resp.send(response.body);
+            console.log(response.body);
+        });
+    }
 });
 
-app.listen(3000);
+//app.listen(3000);
 
-//app.listen(750);
+app.listen(750);
