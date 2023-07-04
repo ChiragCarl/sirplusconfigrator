@@ -1050,6 +1050,8 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
     });
 });
 
+
+
 //delete the Subscription plan  
 app.delete("/deleteSubscriptionPlan",(req,resp)=>{
     console.log(req.query.Id);
@@ -1110,6 +1112,7 @@ app.get("/allOrders", async(req,resp)=>{
     {headers:{ 'X-Recharge-Version': '2021-11','X-Recharge-Access-Token':rechargeApi}})
     if(data){
         allCustomer=data.customers;
+        console.log(allCustomer);
         for(let x=0;x<allCustomer.length;x++){
             if(allCustomer[x].external_customer_id.ecommerce==custId){
                 rechargeCustomerId=allCustomer[x].id;
@@ -1133,6 +1136,23 @@ app.get("/allOrders", async(req,resp)=>{
             console.log(response.body);
         });
     }
+});
+
+
+app.put("/updateSubscriptionQty",(req,resp)=>{
+    let productSubscriptionId=req.query.Id;
+    const options={
+        'method': 'PUT',
+        'url':`https://api.rechargeapps.com/subscriptions/${productSubscriptionId}`,
+        'headers':{
+            'X-Recharge-Version': '2021-11',
+            'X-Recharge-Access-Token':rechargeApi
+        },body:JSON.stringify(req.body.qty)
+    };
+    request(options, function(error,response){
+        if(error)throw new Error(error);
+        resp.send(response.body);
+    });
 });
 
 //app.listen(3000);
