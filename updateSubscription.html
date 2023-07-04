@@ -33,7 +33,7 @@
 
         <input type="button" value=" get All sorted Products " onclick="getSortedProduct();"/>
 
-
+        <input type="button" value=" update  Products Subscription" onclick="updateSubs(383240750);"/>
     </body>
     <script>
         let allCustomerID = [],
@@ -175,12 +175,7 @@
         let customerCount = 1;
         async function updateSubs(id){
             let new_subscription = {
-                subscription: {
-                    "quantity":5,
-                    "charge_interval_frequency":12,
-                    "order_interval_frequency":"12",
-                    "order_interval_unit":"day"
-                }
+                    quantity:5
             };
             await fetch('http://localhost:750/updateSubscriptionPlan?Id='+parseInt(id),
             {method:"PUT",headers:{ "Content-Type": "application/json"},
@@ -188,12 +183,6 @@
                 return resp.json();
             }).then(function(data){
                 console.log(data);
-                if(allCustomeCount > customerCount){
-                    if(allCustomerID[customerCount].customer_id==localStorage.getItem("subscriptionCustomerId")){
-                        updateSubs(parseInt(allCustomerID[customerCount].id));
-                        customerCount++;
-                    }
-                }
             }).catch(function (err){
                 console.log(err);
             });

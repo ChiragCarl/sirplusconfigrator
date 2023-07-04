@@ -1042,7 +1042,7 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
             'X-Recharge-Version': '2021-11',
             'content-type':'Application/json',
             'X-Recharge-Access-Token':rechargeApi
-        },body:JSON.stringify(req.body.subscription)
+        },body:JSON.stringify(req.body.new_subscription)
     };
     request(options, function(error,response){
         if(error)throw new Error(error);
@@ -1129,7 +1129,7 @@ app.put("/updateSubscriptionQty",(req,resp)=>{
         'headers':{
             'X-Recharge-Version': '2021-11',
             'X-Recharge-Access-Token':rechargeApi
-        },body:JSON.stringify(req.body.subscriptionNqty)
+        },body:req.body.subscriptionNqty
     };
     request(options, function(error,response){
         if(error)throw new Error(error);
