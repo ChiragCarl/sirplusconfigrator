@@ -1042,7 +1042,7 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
             'X-Recharge-Version': '2021-11',
             'content-type':'Application/json',
             'X-Recharge-Access-Token':rechargeApi
-        },body:JSON.stringify(req.body.subscription)
+        },body:JSON.stringify(req.body.subscriptionNqty)
     };
     request(options, function(error,response){
         if(error)throw new Error(error);
