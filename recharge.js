@@ -1052,24 +1052,6 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
 
 
 
-//delete the Subscription plan  
-app.delete("/deleteSubscriptionPlan",(req,resp)=>{
-    console.log(req.query.Id);
-    const options={
-        'method': 'DELETE',
-        'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}`,
-        'headers':{
-            'X-Recharge-Version': '2021-11',
-            'content-type':'Application/json',
-            'X-Recharge-Access-Token':rechargeApi
-        }};
-    request(options, function(error,response){
-        if(error)throw new Error(error);
-        resp.send(response.body);
-    });
-});
-
-
 app.get("/allSubscriptions",(req,resp)=>{
     const options={
         'method': 'GET',
@@ -1155,6 +1137,23 @@ app.put("/updateSubscriptionQty",(req,resp)=>{
     });
 });
 
-//app.listen(3000);
+//delete the Subscription plan  
+app.delete("/deleteSubscriptionPlan",(req,resp)=>{
+    console.log(req.query.Id);
+    const options={
+        'method': 'DELETE',
+        'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}`,
+        'headers':{
+            'X-Recharge-Version': '2021-11',
+            'content-type':'Application/json',
+            'X-Recharge-Access-Token':rechargeApi
+        }};
+    request(options, function(error,response){
+        if(error)throw new Error(error);
+        resp.send(response.body);
+    });
+});
 
-app.listen(750);
+app.listen(3000);
+
+//app.listen(750);
