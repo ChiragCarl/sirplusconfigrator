@@ -22,7 +22,7 @@
         
         <input type="button" value=" get All Customers " onclick="getallCustomers();"/>
         
-        <input type="button" value=" delete Single Subscription " onclick="deleteSubscription();"/>
+        <input type="button" value=" delete Single Subscription " onclick="deleteSubscription(383240756);"/>
         
 
         <input type="button" value=" Create A New Product " onclick="storeProductRecharge();"/>
@@ -34,6 +34,8 @@
         <input type="button" value=" get All sorted Products " onclick="getSortedProduct();"/>
 
         <input type="button" value=" update  Products Subscription" onclick="updateSubs(383240764);"/>
+
+        <input type="button" value=" skip Next Delivery " onclick="skipDelivery(383240764);"/>
     </body>
     <script>
         let allCustomerID = [],
@@ -157,9 +159,9 @@
             })
         }
         //delete a particular subscription from the recharge Payment App 
-        async function deleteSubscription(){
+        async function deleteSubscription(Id){
             console.log(allSubscriptionID);
-            await fetch('http://localhost:750/deleteSubscriptionPlan?Id='+parseInt(allSubscriptionID[0]),
+            await fetch('http://localhost:750/deleteSubscriptionPlan?Id='+parseInt(Id),
             {
                 method:"DELETE",headers:{ "Content-Type": "application/json"}
             }).then(function(resp){
@@ -175,7 +177,8 @@
         let customerCount = 1;
         async function updateSubs(id){
             let new_subscription = {
-                    "quantity":5
+                    "quantity":5,
+
             };
             await fetch('http://localhost:750/updateSubscriptionPlan?Id='+parseInt(id),
             {method:"PUT",headers:{ "Content-Type": "application/json"},
@@ -188,6 +191,24 @@
             });
         }
 
+         async function updateSubsInterval(id){
+            let new_subscription = {
+                    "quantity":5,
+                    "charge_interval_frequency": 2,
+                    "order_interval_frequency": 2,
+                    "order_interval_unit": "week"
+                    
+            };
+            await fetch('http://localhost:750//updateSubscriptionInterval?Id='+parseInt(id),
+            {method:"PUT",headers:{ "Content-Type": "application/json"},
+            body:JSON.stringify(new_subscription)}).then(function(resp){
+                return resp.json();
+            }).then(function(data){
+                console.log(data);
+            }).catch(function (err){
+                console.log(err);
+            });
+        }
 
 
         // customer Id from Customer table ---- 110652938
@@ -215,6 +236,22 @@
             };
            await fetch('http://localhost:750/updateSubscriptionPlan?Id=354951133',
                         {method:"PUT",headers:{ "Content-Type": "application/json"},
+                        body:JSON.stringify(new_subscription)}).then(function(resp){
+                            return resp.json();
+                        }).then(function(data){
+                            console.log(data);
+                        }).catch(function (err){
+                           console.log(err);
+                        });
+                    
+        }
+
+        async function skipDelivery(id){
+            let new_subscription = {
+                    "date":"2023-08-31"
+            };
+           await fetch('http://localhost:750/updateSubscriptionPlan?Id='+parseInt(id),
+                        {method:"POST",headers:{ "Content-Type": "application/json"},
                         body:JSON.stringify(new_subscription)}).then(function(resp){
                             return resp.json();
                         }).then(function(data){

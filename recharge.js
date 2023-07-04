@@ -1033,8 +1033,6 @@ app.get("/cancelCustomerSubscription",async (req,resp)=>{
 //update the Subscription plan  
 app.put("/updateSubscriptionPlan",(req,resp)=>{
     console.log(req.query.Id);
-    console.log(resp);
-    console.log(req.body);
     const options={
         'method': 'PUT',
         'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}`,
@@ -1050,6 +1048,23 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
     });
 });
 
+//update the Subscription plan  
+app.put("/updateSubscriptionInterval",(req,resp)=>{
+    console.log(req.query.Id);
+    const options={
+        'method': 'PUT',
+        'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}`,
+        'headers':{
+            'X-Recharge-Version': '2021-11',
+            'content-type':'Application/json',
+            'X-Recharge-Access-Token':rechargeApi
+        },body:JSON.stringify(req.body)
+    };
+    request(options, function(error,response){
+        if(error)throw new Error(error);
+        resp.send(response.body);
+    });
+});
 
 
 app.get("/allSubscriptions",(req,resp)=>{
@@ -1121,21 +1136,6 @@ app.get("/allOrders", async(req,resp)=>{
 });
 
 
-app.put("/updateSubscriptionQty",(req,resp)=>{
-    let productSubscriptionId=req.query.Id;
-    const options={
-        'method': 'PUT',
-        'url':`https://api.rechargeapps.com/subscriptions/${productSubscriptionId}`,
-        'headers':{
-            'X-Recharge-Version': '2021-11',
-            'X-Recharge-Access-Token':rechargeApi
-        },body:req.body.subscriptionNqty
-    };
-    request(options, function(error,response){
-        if(error)throw new Error(error);
-        resp.send(response.body);
-    });
-});
 
 //delete the Subscription plan  
 app.delete("/deleteSubscriptionPlan",(req,resp)=>{
@@ -1154,6 +1154,53 @@ app.delete("/deleteSubscriptionPlan",(req,resp)=>{
     });
 });
 
-app.listen(3000);
 
-//app.listen(750);
+
+//here we need to pass the subscription id of the products to cancel the subscription of the product
+app.get("/cancelSubscription",async (req,resp)=>{
+    let getSubscriptionId=req.query.Id;
+    const cancellationReason = 'no more interested';
+    // Replace with the actual subscription ID you want to cancel
+     const apiUrl = `https://api.rechargeapps.com/subscriptions/${getSubscriptionId}/cancel`;
+     try {
+         const response = await axios.post(apiUrl, {
+           cancellation_reason: cancellationReason
+         }, {
+           headers: {
+             'X-Recharge-Access-Token':rechargeApi, // Replace with your Recharge app access token
+             'Accept': 'application/json',
+             'Content-Type': 'application/json'
+           }
+         });
+         console.log('Cancellation response:', response.data);
+         resp.send(["yes"]);
+       } catch (error) {
+         console.log('Cancellation error:', error.message);
+         resp.send(["no"]);
+       }    
+});
+
+
+//update the Subscription plan  
+app.post("/skipNextDelivery",(req,resp)=>{
+    console.log(req.query.Id);
+    const options={
+        'method': 'POST',
+        'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}/set_next_charge_date`,
+        'headers':{
+            'X-Recharge-Version': '2021-11',
+            'content-type':'Application/json',
+            'X-Recharge-Access-Token':rechargeApi
+        },body:JSON.stringify(req.body)
+    };
+    request(options, function(error,response){
+        if(error)throw new Error(error);
+        resp.send(response.body);
+    });
+});
+
+
+
+//app.listen(3000);
+
+app.listen(750);
