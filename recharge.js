@@ -1030,11 +1030,11 @@ app.get("/cancelCustomerSubscription",async (req,resp)=>{
 });     
 
 
-
-
 //update the Subscription plan  
 app.put("/updateSubscriptionPlan",(req,resp)=>{
     console.log(req.query.Id);
+    console.log(resp);
+    console.log(req.body);
     const options={
         'method': 'PUT',
         'url':`https://api.rechargeapps.com/subscriptions/${req.query.Id}`,
@@ -1042,7 +1042,7 @@ app.put("/updateSubscriptionPlan",(req,resp)=>{
             'X-Recharge-Version': '2021-11',
             'content-type':'Application/json',
             'X-Recharge-Access-Token':rechargeApi
-        },body:JSON.stringify(req.body.new_subscription)
+        },body:JSON.stringify(req.body)
     };
     request(options, function(error,response){
         if(error)throw new Error(error);

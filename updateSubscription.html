@@ -33,7 +33,7 @@
 
         <input type="button" value=" get All sorted Products " onclick="getSortedProduct();"/>
 
-        <input type="button" value=" update  Products Subscription" onclick="updateSubs(383240750);"/>
+        <input type="button" value=" update  Products Subscription" onclick="updateSubs(383240764);"/>
     </body>
     <script>
         let allCustomerID = [],
@@ -175,7 +175,7 @@
         let customerCount = 1;
         async function updateSubs(id){
             let new_subscription = {
-                    quantity:5
+                    "quantity":5
             };
             await fetch('http://localhost:750/updateSubscriptionPlan?Id='+parseInt(id),
             {method:"PUT",headers:{ "Content-Type": "application/json"},
