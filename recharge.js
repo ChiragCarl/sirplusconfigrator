@@ -1200,6 +1200,22 @@ app.post("/skipNextDelivery",(req,resp)=>{
 });
 
 
+app.get("/allFutureOrder",(req,resp)=>{
+    const options={
+        'method': 'GET',
+        'url':`https://api.rechargeapps.com/customers/${req.query.Id}/delivery_schedule`,
+        'headers':{
+            'X-Recharge-Version': '2021-11',
+            'X-Recharge-Access-Token':rechargeApi
+        }
+    };
+    request(options, function(error,response){
+        if(error)throw new Error(error);
+        console.log(response.body);
+        resp.send(response.body);
+    });
+});
+
 
 app.listen(3000);
 
