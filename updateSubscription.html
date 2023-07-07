@@ -36,6 +36,9 @@
         <input type="button" value=" update  Products Subscription" onclick="updateSubs(383240764);"/>
 
         <input type="button" value=" skip Next Delivery " onclick="skipDelivery(383240764);"/>
+
+        <input type="button" value=" get all products  " onclick="getAllproducts();"/>
+        
     </body>
     <script>
         let allCustomerID = [],
@@ -57,7 +60,6 @@
         }
 
         async function createNewCustomerRecharge(){
-          
             //await fetch('http://localhost:750/createCustomerInRecharge',
             await fetch('http://localhost:750/skipCustomerNextSubscriptedOrder',
             { method:"POST",headers:{ "Content-Type": "application/json"}})
@@ -68,6 +70,15 @@
             })
         }
 
+        async function getAllproducts(){
+            await fetch('http://localhost:750/getProductByGraphQl')
+            .then(function(resp){
+                return resp.json();
+            }).then (function(data){
+                console.log(data);
+            })
+
+        }
         //create an New Product into the recharge product section
         async function storeProductRecharge(){
 
