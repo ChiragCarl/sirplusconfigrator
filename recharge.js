@@ -32,13 +32,22 @@ app.use(cors());
 
 //console.log(process.env.shopName);
 //client site creds
-let Apikey="89ddc5a0f041b4ce30d407b90fab38ed";
-let APIsecretkey="a7219f0fb3b02e7a4a33ebf52ad2125b";
-let Password="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";
+// let Apikey="89ddc5a0f041b4ce30d407b90fab38ed";
+// let APIsecretkey="a7219f0fb3b02e7a4a33ebf52ad2125b";
+// let Password="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";
+// const shopName="sirplus-food";
+// //store front api key of client side 
+// let apiKey="8b161343b3325242e1abf4be1b9538a7";
+// let rechargeApi='sk_1x1_3dba0a68f8c201453d73ae5228a595dd754772f247d88cbb5ea27194ef3ff43f';
+
+let Apikey=process.env.Apikey;
+let APIsecretkey=process.env.APIsecretkey;
+let Password=process.env.Password;
 const shopName="sirplus-food";
-//store front api key of client side 
-let apiKey="8b161343b3325242e1abf4be1b9538a7";
-let rechargeApi='sk_1x1_3dba0a68f8c201453d73ae5228a595dd754772f247d88cbb5ea27194ef3ff43f';
+// //store front api key of client side 
+let apiKey=process.env.apiKey;
+let rechargeApi=process.env.rechargeApi;
+
 
 let nextLink=`https://${Apikey}:${Password}@${shopName}.myshopify.com/admin/api/2022-10/products.json`;
 
